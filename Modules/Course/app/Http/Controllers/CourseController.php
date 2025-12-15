@@ -48,7 +48,7 @@ class CourseController extends Controller
     {
         $result = $this->service->get($course);
 
-        $this->interactService->recordView($course);
+        $this->interactService->visit($course);
         return $result->status
             ? ApiResponse::success($result->data, $result->message)
             : ApiResponse::error($result->message);
