@@ -2,12 +2,11 @@
 
 namespace Modules\Course\Models;
 
+use App\Contracts\HasSlug;
+use App\Contracts\Interactable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Enrollment\Models\Enrollment;
-use Modules\Interaction\Models\Comment;
-use Modules\Interaction\Models\Like;
-use Modules\Interaction\Models\View;
 use Modules\Lesson\Models\Lesson;
 use Modules\User\Models\User;
 
@@ -15,7 +14,7 @@ use Modules\User\Models\User;
 
 class Course extends Model
 {
-    use HasFactory;
+    use HasFactory , HasSlug , Interactable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +28,7 @@ class Course extends Model
         "published",
     ];
 
-    
+
 
     protected function casts()
     {
@@ -69,21 +68,6 @@ class Course extends Model
     public function students()
     {
         return $this->belongsToMany(User::class, "enrollments");
-    }
-
-    public function likes()
-    {
-        return $this->morphMany(Like::class, "likeable");
-    }
-
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, "commentable");
-    }
-
-    public function views()
-    {
-        return $this->morphMany(View::class, "viewable");
     }
 
     public function owner()

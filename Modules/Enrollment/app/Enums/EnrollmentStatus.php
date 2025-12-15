@@ -2,7 +2,7 @@
 
 namespace Modules\Enrollment\Enums;
 
-enum EnrollmentStatus
+enum EnrollmentStatus: string
 {
     case PENDING = "pending";
     case COMPLETED = "completed";

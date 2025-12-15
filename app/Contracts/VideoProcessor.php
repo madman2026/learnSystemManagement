@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Contracts;
 
 use ProtoneMedia\LaravelFFmpeg\Support\FFmpeg;
 use FFMpeg\Format\Video\X264;
-use FFMpeg\Coordinate\Dimension;
 
 class VideoProcessor
 {

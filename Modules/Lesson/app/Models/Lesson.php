@@ -2,6 +2,8 @@
 
 namespace Modules\Lesson\Models;
 
+use App\Contracts\HasSlug;
+use App\Contracts\Interactable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +17,7 @@ use Modules\Lesson\Database\Factories\LessonFactory;
 
 class Lesson extends Model
 {
-    use HasFactory;
+    use HasFactory , HasSlug , Interactable;
 
     protected $fillable = [
         "title",
@@ -61,21 +63,6 @@ class Lesson extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
-    }
-
-    public function likes()
-    {
-        return $this->morphMany(Like::class, "likeable");
-    }
-
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, "commentable");
-    }
-
-    public function views()
-    {
-        return $this->morphMany(View::class, "viewable");
     }
 
     public function progress(): HasMany

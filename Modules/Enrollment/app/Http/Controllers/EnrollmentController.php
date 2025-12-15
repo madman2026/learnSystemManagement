@@ -2,8 +2,12 @@
 
 namespace Modules\Enrollment\Http\Controllers;
 
+use App\Contracts\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Course\Models\Course;
+use Modules\Enrollment\Http\Requests\CreateEnrollmentRequest;
+use Modules\Enrollment\Models\Enrollment;
 use Modules\Enrollment\Services\EnrollmentService;
 
 class EnrollmentController extends Controller
@@ -14,27 +18,32 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        return $this->service->index();
+        $result = $this->service->index();
+        return $result->status
+            ? ApiResponse::success($result->data, $result->message)
+            : ApiResponse::error($result->message);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Course $Course)
     {
-        //
-
-        return response()->json([]);
+        $result = $this->service->create($Course);
+        return $result->status
+            ? ApiResponse::success($result->data, $result->message)
+            : ApiResponse::error($result->message);
     }
 
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(Course $Course)
     {
-        //
-
-        return response()->json([]);
+        $result = $this->service->get($Course);
+        return $result->status
+            ? ApiResponse::success($result->data, $result->message)
+            : ApiResponse::error($result->message , $result->data);
     }
 
     /**

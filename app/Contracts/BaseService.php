@@ -4,6 +4,7 @@ namespace App\Contracts;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 abstract class BaseService
@@ -19,8 +20,21 @@ abstract class BaseService
                 ? DB::transaction($callback)
                 : $callback();
 
-            return ServiceResponse::success($result , $successMessage);
-        } catch (Throwable $e) {
+            return ServiceResponse::success($result, $successMessage);
+        }
+        catch (NotFoundHttpException $e) {
+            Log::warning("Resource not found.", [
+                "exception" => $e,
+                "trace" => $e->getTraceAsString(),
+                "user_id" => auth()->id() ?? null,
+            ]);
+
+            return ServiceResponse::error(
+                "Resource not found!",
+                env("APP_DEBUG") ? $e->getMessage() : null,
+            );
+        }
+        catch (Throwable $e) {
             Log::error($errorMessage, [
                 "exception" => $e,
                 "trace" => $e->getTraceAsString(),
