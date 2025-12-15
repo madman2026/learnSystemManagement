@@ -2,58 +2,68 @@
 
 namespace Modules\Interaction\Http\Controllers;
 
+use App\Contracts\ApiResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Modules\Interaction\Http\Requests\CreateCommentRequest;
+use Modules\Interaction\Http\Requests\ToggleLikeRequest;
+use Modules\Interaction\Http\Requests\UpdateCommentRequest;
+use Modules\Interaction\Http\Requests\VisitRequest;
+use Modules\Interaction\Models\Comment;
+use Modules\Interaction\Services\InteractService;
 
 class InteractionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(private InteractService $service){}
+
+    public function createComment(CreateCommentRequest $request)
     {
-        //
+        $result = $this->service->createComment($request->validated());
+        return $result->status
+            ? ApiResponse::success($result->data, $result->message)
+            : ApiResponse::error($result->message);
 
-        return response()->json([]);
     }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function toggleLike(ToggleLikeRequest $request)
     {
-        //
-
-        return response()->json([]);
+        $result = $this->service->toggleLike($request->validated());
+        return $result->status
+            ? ApiResponse::success($result->data, $result->message)
+            : ApiResponse::error($result->message);
     }
 
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function visit(VisitRequest $request)
     {
-        //
-
-        return response()->json([]);
+        $result = $this->service->visit($request->validated());
+        return $result->status
+            ? ApiResponse::success($result->data, $result->message)
+            : ApiResponse::error($result->message);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function updateComment(UpdateCommentRequest $request)
     {
-        //
-
-        return response()->json([]);
+        $result = $this->service->updateComment($request->validated());
+        return $result->status
+            ? ApiResponse::success($result->data, $result->message)
+            : ApiResponse::error($result->message);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function deleteComment(int $id)
     {
-        //
-
-        return response()->json([]);
+        $result = Comment::findOrFail($id)?->delete();
+        return $result->status
+            ? ApiResponse::success(message: 'delete comment successfully!')
+            : ApiResponse::error('somthing wen wrong!');
     }
 }
