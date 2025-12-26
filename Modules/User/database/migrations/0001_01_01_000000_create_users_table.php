@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\User\Enums\UserStatusEnum;
+use Modules\User\Enums\UserStatusType;
 
 return new class extends Migration
 {
@@ -19,6 +21,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
+            $table->string('status')->default(UserStatusEnum::PENDING->value);
             $table->rememberToken();
             $table->timestamps();
         });

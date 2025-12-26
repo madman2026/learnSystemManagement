@@ -4,5 +4,6 @@
     "Course": true,
     "Interaction": true,
     "Authorization": true,
-    "Lesson": true
+    "Lesson": true,
+    "Instructor": true
 }

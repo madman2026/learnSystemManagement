@@ -26,10 +26,13 @@ class AuthController extends Controller
 
     public function register(RegisterApiRequest $request)
     {
-        $result = $this->service->register($request->validated());
+        $data = $request->validated();
+        $role = $data['role'];
+        unset($data['role']);
 
+        $result = $this->service->register($data , $role);
         if ($result->status) {
-            event(new UserRegistered($result->data));
+            event(new UserRegistered($result->data['user']));
             return ApiResponse::success($result->data, 'User registered successfully', 201);
         }
 

@@ -38,16 +38,14 @@ class AuthService extends BaseService
         }, 'Login service error');
     }
 
-    public function register(array $data): ServiceResponse
+    public function register(array $data , string $role): ServiceResponse
     {
-        return $this->execute(function () use ($data) {
-            $user = $this->registerAction->handle($data);
-
-            $token = $user->createToken('auth_token')->plainTextToken;
+        return $this->execute(function () use ($data , $role) {
+            $user = $this->registerAction->handle($data , $role);
 
             return [
                 'user'  => $user,
-                'token' => $token
+                'token' => $user->createToken('auth_token')->plainTextToken
             ];
         }, 'Registration service error');
     }

@@ -10,11 +10,10 @@ class ShowEnrollmentAction
 {
     public function handle(Course $course)
     {
-        if (auth()->user()->enrollments->where('course_id' , $course->id)->first()) {
-            return auth()->user()->enrollments->where('course_id' , $course->id)->first();
-
-        }
-        return throw new NotFoundHttpException("User Not Registered On This Course");
-
+        return auth()
+            ->user()
+            ->enrollments()
+            ->where('course_id', $course->id)
+            ->firstOrFail();
     }
 }
